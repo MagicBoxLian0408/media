@@ -36,7 +36,7 @@ public class UserInfoExtractFilter extends OncePerRequestFilter {
             return;
         }
 
-        UserId uploaderId = UserId.of(Long.valueOf(userIdHeader));
+        UserId uploaderId = UserId.of(Long.valueOf(userIdRequestHeader));
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(uploaderId, null);
         SecurityContextHolder.getContext().setAuthentication(authToken);
