@@ -1,0 +1,62 @@
+{
+  "groups": [
+    {
+      "name": "inbox",
+      "type": "kr.magicbox.media.adapter.in.kafka.properties.InboxProperties",
+      "sourceType": "kr.magicbox.media.adapter.in.kafka.properties.InboxProperties"
+    },
+    {
+      "name": "minio",
+      "type": "kr.magicbox.media.adapter.out.storage.MinioProperties",
+      "sourceType": "kr.magicbox.media.adapter.out.storage.MinioProperties"
+    },
+    {
+      "name": "security.trusted",
+      "type": "kr.magicbox.media.adapter.in.security.properties.TrustedIpProperties",
+      "sourceType": "kr.magicbox.media.adapter.in.security.properties.TrustedIpProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "inbox.max-event-age-minutes",
+      "type": "java.lang.Long",
+      "sourceType": "kr.magicbox.media.adapter.in.kafka.properties.InboxProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "minio.access-key",
+      "type": "java.lang.String",
+      "sourceType": "kr.magicbox.media.adapter.out.storage.MinioProperties"
+    },
+    {
+      "name": "minio.bucket",
+      "type": "java.lang.String",
+      "sourceType": "kr.magicbox.media.adapter.out.storage.MinioProperties"
+    },
+    {
+      "name": "minio.endpoint",
+      "type": "java.lang.String",
+      "sourceType": "kr.magicbox.media.adapter.out.storage.MinioProperties"
+    },
+    {
+      "name": "minio.presigned-url-ttl-seconds",
+      "type": "java.lang.Long",
+      "sourceType": "kr.magicbox.media.adapter.out.storage.MinioProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "minio.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "kr.magicbox.media.adapter.out.storage.MinioProperties"
+    },
+    {
+      "name": "security.trusted.ips",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "kr.magicbox.media.adapter.in.security.properties.TrustedIpProperties"
+    }
+  ],
+  "hints": [],
+  "ignored": {
+    "properties": []
+  }
+}
