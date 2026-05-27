@@ -63,3 +63,6 @@ inbox:
 
 cleanup:
   inactive-media-age-hours: 24
+
+scheduler:
+  cleanup-inactive-media-lock-key: lock:cleanupInactiveMedia
