@@ -7,7 +7,7 @@ import kr.magicbox.media.domain.aggregate.Media;
 import kr.magicbox.media.domain.enums.MediaStatus;
 import kr.magicbox.media.domain.exception.MediaNotFoundException;
 import kr.magicbox.media.domain.vo.MediaId;
-import kr.magicbox.media.domain.vo.UploaderId;
+import kr.magicbox.media.domain.vo.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -76,7 +76,7 @@ public class MediaJpaAdapter implements MediaRepositoryPort {
     private Media toDomain(MediaEntity entity) {
         return Media.builder()
                 .id(MediaId.of(entity.getId()))
-                .uploaderId(UploaderId.of(entity.getUploaderId()))
+                .uploaderId(UserId.of(entity.getUploaderId()))
                 .uuid(entity.getUuid())
                 .fileName(entity.getFileName())
                 .contentType(entity.getContentType())

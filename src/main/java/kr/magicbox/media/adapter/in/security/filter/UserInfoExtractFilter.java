@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.magicbox.media.adapter.in.security.properties.TrustedIpProperties;
-import kr.magicbox.media.domain.vo.UploaderId;
+import kr.magicbox.media.domain.vo.UserId;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,11 +36,10 @@ public class UserInfoExtractFilter extends OncePerRequestFilter {
             return;
         }
 
-        Long uploaderIdLong = Long.valueOf(userIdRequestHeader);
-        UploaderId uploaderId = UploaderId.of(uploaderIdLong);
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(uploaderId, null);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        UserId uploaderId = UserId.of(Long.valueOf(userIdRequestHeader));
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(uploaderId, null);
+        SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
     }

@@ -1,11 +1,11 @@
 package kr.magicbox.media.application.dto.command;
 
-import kr.magicbox.media.domain.vo.UploaderId;
+import kr.magicbox.media.domain.vo.UserId;
 import lombok.Builder;
 
 @Builder
 public record GenerateUploadUrlCommand(
-        UploaderId uploaderId,
+        UserId uploaderId,
         String fileName,
         String contentType
 ) {}
