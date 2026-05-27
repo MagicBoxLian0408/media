@@ -23,9 +23,12 @@ public class InactiveMediaCleanupScheduler {
         if (!lock.tryLock()) {
             return;
         }
-        log.info("[Scheduler] 고아 미디어 정리 시작");
-        cleanupInactiveMediaUseCase.cleanupInactiveMedia();
-        lock.unlock();
-        log.info("[Scheduler] 고아 미디어 정리 완료");
+        try {
+            log.info("[Scheduler] 고아 미디어 정리 시작");
+            cleanupInactiveMediaUseCase.cleanupInactiveMedia();
+            log.info("[Scheduler] 고아 미디어 정리 완료");
+        } finally {
+            lock.unlock();
+        }
     }
 }
