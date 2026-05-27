@@ -30,8 +30,7 @@ public class DeleteMediaService implements DeleteMediaUseCase {
             throw new MediaUnauthorizedException();
         }
 
-        objectStoragePort.deleteIfExists(uuid);
-        mediaRepositoryPort.deleteByUuid(uuid);
+        deleteFromStorageAndDb(uuid);
         log.debug("[Media] uuid={} 삭제 완료 (uploaderId={})", uuid, requesterId.value());
     }
 
@@ -41,8 +40,12 @@ public class DeleteMediaService implements DeleteMediaUseCase {
         mediaRepositoryPort.findByUuid(uuid)
                 .orElseThrow(MediaNotFoundException::new);
 
+        deleteFromStorageAndDb(uuid);
+        log.debug("[Media] uuid={} 관리자 삭제 완료", uuid);
+    }
+
+    private void deleteFromStorageAndDb(String uuid) {
         objectStoragePort.deleteIfExists(uuid);
         mediaRepositoryPort.deleteByUuid(uuid);
-        log.debug("[Media] uuid={} 관리자 삭제 완료", uuid);
     }
 }
