@@ -2,7 +2,7 @@ package kr.magicbox.media.domain.aggregate;
 
 import kr.magicbox.media.domain.enums.MediaStatus;
 import kr.magicbox.media.domain.vo.MediaId;
-import kr.magicbox.media.domain.vo.UploaderId;
+import kr.magicbox.media.domain.vo.UserId;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ import lombok.Getter;
 public class Media {
 
     private final MediaId id;
-    private final UploaderId uploaderId;
+    private final UserId uploaderId;
     private final String uuid;
     private final String fileName;
     private final String contentType;
@@ -18,7 +18,7 @@ public class Media {
     private MediaStatus status;
 
     @Builder
-    public Media(MediaId id, UploaderId uploaderId, String uuid, String fileName,
+    public Media(MediaId id, UserId uploaderId, String uuid, String fileName,
                  String contentType, Long fileSize, MediaStatus status) {
         this.id = id;
         this.uploaderId = uploaderId;

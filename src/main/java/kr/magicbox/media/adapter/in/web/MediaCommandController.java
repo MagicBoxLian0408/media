@@ -5,7 +5,7 @@ import kr.magicbox.media.adapter.in.web.dto.request.GenerateUploadUrlRequest;
 import kr.magicbox.media.adapter.in.web.dto.response.GenerateUploadUrlResponse;
 import kr.magicbox.media.application.port.in.DeleteMediaUseCase;
 import kr.magicbox.media.application.port.in.GenerateUploadUrlUseCase;
-import kr.magicbox.media.domain.vo.UploaderId;
+import kr.magicbox.media.domain.vo.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +26,7 @@ public class MediaCommandController {
 
     @PostMapping("/upload-url")
     public ResponseEntity<GenerateUploadUrlResponse> generateUploadUrl(
-            @AuthenticationPrincipal UploaderId uploaderId,
+            @AuthenticationPrincipal UserId uploaderId,
             @Valid @RequestBody GenerateUploadUrlRequest request
     ) {
         return ResponseEntity.ok(
@@ -36,7 +36,7 @@ public class MediaCommandController {
 
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deleteMedia(
-            @AuthenticationPrincipal UploaderId uploaderId,
+            @AuthenticationPrincipal UserId uploaderId,
             @PathVariable String uuid
     ) {
         deleteMediaUseCase.delete(uuid, uploaderId);

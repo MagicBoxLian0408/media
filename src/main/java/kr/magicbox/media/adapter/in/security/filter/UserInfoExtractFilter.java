@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.magicbox.media.adapter.in.security.properties.TrustedIpProperties;
-import kr.magicbox.media.domain.vo.UploaderId;
+import kr.magicbox.media.domain.vo.UserId;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class UserInfoExtractFilter extends OncePerRequestFilter {
             return;
         }
 
-        UploaderId uploaderId = UploaderId.of(Long.valueOf(userIdHeader));
+        UserId uploaderId = UserId.of(Long.valueOf(userIdHeader));
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(uploaderId, null);
         SecurityContextHolder.getContext().setAuthentication(authToken);

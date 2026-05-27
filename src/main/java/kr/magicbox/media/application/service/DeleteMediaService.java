@@ -6,7 +6,7 @@ import kr.magicbox.media.application.port.out.ObjectStoragePort;
 import kr.magicbox.media.domain.aggregate.Media;
 import kr.magicbox.media.domain.exception.MediaNotFoundException;
 import kr.magicbox.media.domain.exception.MediaUnauthorizedException;
-import kr.magicbox.media.domain.vo.UploaderId;
+import kr.magicbox.media.domain.vo.UserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class DeleteMediaService implements DeleteMediaUseCase {
 
     @Transactional
     @Override
-    public void delete(String uuid, UploaderId requesterId) {
+    public void delete(String uuid, UserId requesterId) {
         Media media = mediaRepositoryPort.findByUuid(uuid)
                 .orElseThrow(MediaNotFoundException::new);
 
