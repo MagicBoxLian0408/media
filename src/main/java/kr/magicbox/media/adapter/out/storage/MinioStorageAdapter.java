@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
@@ -41,7 +42,11 @@ public class MinioStorageAdapter implements ObjectStoragePort {
     }
 
     @Override
-    public void delete(String uuid) {
+    public void deleteIfExists(String uuid) {
+        if (!exists(uuid)) {
+            log.debug("[MinIO] 파일 없음 (무시). uuid={}", uuid);
+            return;
+        }
         s3Client.deleteObject(DeleteObjectRequest.builder()
                 .bucket(minioProperties.getBucket())
                 .key(uuid)
@@ -49,12 +54,15 @@ public class MinioStorageAdapter implements ObjectStoragePort {
         log.debug("[MinIO] 파일 삭제 완료. uuid={}", uuid);
     }
 
-    @Override
-    public void deleteIfExists(String uuid) {
+    private boolean exists(String uuid) {
         try {
-            delete(uuid);
+            s3Client.headObject(HeadObjectRequest.builder()
+                    .bucket(minioProperties.getBucket())
+                    .key(uuid)
+                    .build());
+            return true;
         } catch (NoSuchKeyException e) {
-            log.debug("[MinIO] 파일 없음 (무시). uuid={}", uuid);
+            return false;
         }
     }
 }
