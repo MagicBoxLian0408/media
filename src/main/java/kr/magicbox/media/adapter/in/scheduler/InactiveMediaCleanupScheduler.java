@@ -13,14 +13,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class InactiveMediaCleanupScheduler {
 
-    private static final String LOCK_KEY = "lock:cleanupInactiveMedia";
-
     private final CleanupInactiveMediaUseCase cleanupInactiveMediaUseCase;
     private final RedissonClient redissonClient;
+    private final SchedulerProperties schedulerProperties;
 
     @Scheduled(cron = "0 0 3 * * *")
     public void cleanupInactiveMedia() {
-        RLock lock = redissonClient.getLock(LOCK_KEY);
+        RLock lock = redissonClient.getLock(schedulerProperties.getCleanupInactiveMediaLockKey());
         if (!lock.tryLock()) {
             return;
         }

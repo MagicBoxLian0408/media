@@ -8,14 +8,12 @@ import kr.magicbox.media.adapter.in.security.properties.TrustedIpProperties;
 import kr.magicbox.media.domain.vo.UserId;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Slf4j
 @RequiredArgsConstructor
 public class UserInfoExtractFilter extends OncePerRequestFilter {
 
@@ -25,16 +23,15 @@ public class UserInfoExtractFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String clientIp = request.getRemoteAddr();
-        boolean trusted = trustedIpProperties.getIps().contains(clientIp);
-        log.debug("[UserInfoExtractFilter] clientIp={}, trusted={}", clientIp, trusted);
 
-        if (!trusted) {
+        if (!trustedIpProperties.getIps().contains(clientIp)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String userIdHeader = request.getHeader("X-User-Id");
-        if (!isValidUserId(userIdHeader)) {
+        String userIdRequestHeader = request.getHeader("X-User-Id");
+
+        if (!isValidUserId(userIdRequestHeader)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -47,10 +44,11 @@ public class UserInfoExtractFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean isValidUserId(String userIdHeader) {
+    private boolean isValidUserId(String userIdRequestHeader) {
         try {
-            return Long.parseLong(userIdHeader) > 0;
-        } catch (Exception e) {
+            return Long.parseLong(userIdRequestHeader) > 0;
+        }
+        catch (Exception e) {
             return false;
         }
     }
