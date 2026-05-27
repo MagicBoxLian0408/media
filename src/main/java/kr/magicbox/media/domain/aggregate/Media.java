@@ -1,0 +1,35 @@
+package kr.magicbox.media.domain.aggregate;
+
+import kr.magicbox.media.domain.enums.MediaStatus;
+import kr.magicbox.media.domain.vo.MediaId;
+import kr.magicbox.media.domain.vo.UploaderId;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+public class Media {
+
+    private final MediaId id;
+    private final UploaderId uploaderId;
+    private final String uuid;
+    private final String fileName;
+    private final String contentType;
+    private final Long fileSize;
+    private MediaStatus status;
+
+    @Builder
+    public Media(MediaId id, UploaderId uploaderId, String uuid, String fileName,
+                 String contentType, Long fileSize, MediaStatus status) {
+        this.id = id;
+        this.uploaderId = uploaderId;
+        this.uuid = uuid;
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.fileSize = fileSize;
+        this.status = status;
+    }
+
+    public void activate() {
+        this.status = MediaStatus.ACTIVE;
+    }
+}
