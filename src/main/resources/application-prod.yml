@@ -1,13 +1,13 @@
 spring:
   application:
-    name: media-dev
+    name: media-prod
   jackson:
     property-naming-strategy: SNAKE_CASE
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     listener:
       ack-mode: record
-      missing-topics-fatal: false
+      missing-topics-fatal: true
     consumer:
       group-id: media-service
       auto-offset-reset: earliest
@@ -27,10 +27,10 @@ spring:
           user-profile-updated:kr.magicbox.media.adapter.in.kafka.event.UserProfileUpdatedEvent
     retry:
       topic:
-        attempts: 3
+        attempts: 5
         backoff:
           delay: 1s
-          max-delay: 3s
+          max-delay: 10s
   datasource:
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
@@ -38,7 +38,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     open-in-view: false
 
 server:
@@ -62,7 +62,7 @@ redisson:
   password: ${REDIS_PASSWORD}
 
 inbox:
-  max-event-age-minutes: 5
+  max-event-age-minutes: 60
 
 cleanup:
   inactive-media-age-hours: 24
