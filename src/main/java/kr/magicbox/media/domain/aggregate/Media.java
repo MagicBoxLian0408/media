@@ -14,23 +14,20 @@ public class Media {
     private final String uuid;
     private final String fileName;
     private final String contentType;
-    private Long fileSize;
     private MediaStatus status;
 
     @Builder
     public Media(MediaId id, UserId uploaderId, String uuid, String fileName,
-                 String contentType, Long fileSize, MediaStatus status) {
+                 String contentType, MediaStatus status) {
         this.id = id;
         this.uploaderId = uploaderId;
         this.uuid = uuid;
         this.fileName = fileName;
         this.contentType = contentType;
-        this.fileSize = fileSize;
         this.status = status;
     }
 
-    public void activate(long fileSize) {
+    public void activate() {
         this.status = MediaStatus.ACTIVE;
-        this.fileSize = fileSize;
     }
 }
