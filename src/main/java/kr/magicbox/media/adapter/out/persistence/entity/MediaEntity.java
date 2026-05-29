@@ -29,20 +29,17 @@ public class MediaEntity extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String contentType;
 
-    private Long fileSize;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MediaStatus status;
 
     @Builder
     public MediaEntity(Long uploaderId, String uuid, String fileName, String contentType,
-                       Long fileSize, MediaStatus status) {
+                       MediaStatus status) {
         this.uploaderId = uploaderId;
         this.uuid = uuid;
         this.fileName = fileName;
         this.contentType = contentType;
-        this.fileSize = fileSize;
         this.status = status;
     }
 

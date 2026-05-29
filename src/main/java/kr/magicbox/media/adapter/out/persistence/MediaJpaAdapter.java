@@ -28,7 +28,6 @@ public class MediaJpaAdapter implements MediaRepositoryPort {
                 .uuid(media.getUuid())
                 .fileName(media.getFileName())
                 .contentType(media.getContentType())
-                .fileSize(media.getFileSize())
                 .status(media.getStatus())
                 .build();
         MediaEntity saved = mediaJpaRepository.save(entity);
@@ -80,7 +79,6 @@ public class MediaJpaAdapter implements MediaRepositoryPort {
                 .uuid(entity.getUuid())
                 .fileName(entity.getFileName())
                 .contentType(entity.getContentType())
-                .fileSize(entity.getFileSize())
                 .status(entity.getStatus())
                 .build();
     }

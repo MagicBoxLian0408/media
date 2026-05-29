@@ -2,7 +2,6 @@ package kr.magicbox.media.application.service;
 
 import kr.magicbox.media.application.port.in.ActivateMediaUseCase;
 import kr.magicbox.media.application.port.out.MediaRepositoryPort;
-import kr.magicbox.media.application.port.out.ObjectStoragePort;
 import kr.magicbox.media.domain.aggregate.Media;
 import kr.magicbox.media.domain.enums.MediaStatus;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import java.util.List;
 public class ActivateMediaService implements ActivateMediaUseCase {
 
     private final MediaRepositoryPort mediaRepositoryPort;
-    private final ObjectStoragePort objectStoragePort;
 
     @Transactional
     @Override
@@ -29,8 +27,7 @@ public class ActivateMediaService implements ActivateMediaUseCase {
             if (media.getStatus() == MediaStatus.ACTIVE) {
                 continue;
             }
-            long fileSize = objectStoragePort.getFileSize(media.getUuid());
-            media.activate(fileSize);
+            media.activate();
             mediaRepositoryPort.update(media);
         }
 
