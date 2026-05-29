@@ -14,7 +14,7 @@ public class Media {
     private final String uuid;
     private final String fileName;
     private final String contentType;
-    private final Long fileSize;
+    private Long fileSize;
     private MediaStatus status;
 
     @Builder
@@ -29,7 +29,8 @@ public class Media {
         this.status = status;
     }
 
-    public void activate() {
+    public void activate(long fileSize) {
         this.status = MediaStatus.ACTIVE;
+        this.fileSize = fileSize;
     }
 }
