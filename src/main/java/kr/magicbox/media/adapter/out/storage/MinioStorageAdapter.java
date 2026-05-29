@@ -13,7 +13,6 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequ
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import java.net.URI;
 import java.time.Duration;
 
 @Slf4j
@@ -39,7 +38,7 @@ public class MinioStorageAdapter implements ObjectStoragePort {
                 .build();
 
         PresignedPutObjectRequest presignedRequest = s3Presigner.presignPutObject(presignRequest);
-        return replaceHost(presignedRequest.url().toString());
+        return presignedRequest.url().toString();
     }
 
     @Override
@@ -53,13 +52,6 @@ public class MinioStorageAdapter implements ObjectStoragePort {
                 .key(uuid)
                 .build());
         log.debug("[MinIO] 파일 삭제 완료. uuid={}", uuid);
-    }
-
-    private String replaceHost(String presignedUrl) {
-        URI internal = URI.create(presignedUrl);
-        String internalOrigin = internal.getScheme() + "://" + internal.getHost()
-                + (internal.getPort() != -1 ? ":" + internal.getPort() : "");
-        return presignedUrl.replace(internalOrigin, minioProperties.getPublicEndpoint());
     }
 
     private boolean exists(String uuid) {
