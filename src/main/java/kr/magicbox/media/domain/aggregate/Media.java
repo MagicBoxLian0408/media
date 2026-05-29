@@ -29,8 +29,7 @@ public class Media {
         this.status = status;
     }
 
-    public void activate(long fileSize) {
+    public void activate() {
         this.status = MediaStatus.ACTIVE;
-        this.fileSize = fileSize;
     }
 }

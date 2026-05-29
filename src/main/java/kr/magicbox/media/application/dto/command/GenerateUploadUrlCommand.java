@@ -7,5 +7,6 @@ import lombok.Builder;
 public record GenerateUploadUrlCommand(
         UserId uploaderId,
         String fileName,
-        String contentType
+        String contentType,
+        Long fileSize
 ) {}

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
-import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
@@ -53,15 +52,6 @@ public class MinioStorageAdapter implements ObjectStoragePort {
                 .key(uuid)
                 .build());
         log.debug("[MinIO] 파일 삭제 완료. uuid={}", uuid);
-    }
-
-    @Override
-    public long getFileSize(String uuid) {
-        HeadObjectResponse response = s3Client.headObject(HeadObjectRequest.builder()
-                .bucket(minioProperties.getBucket())
-                .key(uuid)
-                .build());
-        return response.contentLength();
     }
 
     private boolean exists(String uuid) {

@@ -34,6 +34,7 @@ public class GenerateUploadUrlService implements GenerateUploadUrlUseCase {
                 .uuid(uuid)
                 .fileName(command.fileName())
                 .contentType(command.contentType())
+                .fileSize(command.fileSize())
                 .status(MediaStatus.INACTIVE)
                 .build();
 
