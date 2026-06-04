@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.List;
 
 public record ShortFormUpdatedEvent(
-        @JsonProperty("event_id") Long eventId,
         @JsonProperty("shortform_id") Long shortFormId,
         @JsonProperty("creator_id") Long creatorId,
         @JsonProperty("before") ShortFormSnapshot before,

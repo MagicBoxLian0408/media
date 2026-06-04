@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.List;
 
 public record ReleaseDeletedEvent(
-        @JsonProperty("event_id") Long eventId,
         @JsonProperty("release_id") Long releaseId,
         @JsonProperty("creator_id") Long creatorId,
         @JsonProperty("media_urls") List<String> mediaUrls,
