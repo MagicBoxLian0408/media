@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.List;
 
 public record GeneralGoodsDeletedEvent(
-        @JsonProperty("event_id") Long eventId,
         @JsonProperty("general_goods_id") Long generalGoodsId,
         @JsonProperty("creator_id") Long creatorId,
         @JsonProperty("media_urls") List<String> mediaUrls,

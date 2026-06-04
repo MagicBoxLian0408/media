@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.List;
 
 public record ReleaseUpdatedEvent(
-        @JsonProperty("event_id") Long eventId,
         @JsonProperty("release_id") Long releaseId,
         @JsonProperty("creator_id") Long creatorId,
         @JsonProperty("before") ReleaseSnapshot before,

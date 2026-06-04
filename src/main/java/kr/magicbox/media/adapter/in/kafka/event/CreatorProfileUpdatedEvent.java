@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 
 public record CreatorProfileUpdatedEvent(
-        @JsonProperty("event_id") Long eventId,
         @JsonProperty("creator_id") Long creatorId,
         @JsonProperty("before") ProfileSnapshot before,
         @JsonProperty("after") ProfileSnapshot after,
