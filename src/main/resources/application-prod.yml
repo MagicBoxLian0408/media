@@ -44,10 +44,6 @@ spring:
 server:
   port: ${SERVER_PORT}
 
-security:
-  trusted:
-    ips:
-      - ${TRUSTED_IP_GATEWAY}
 
 minio:
   endpoint: ${MINIO_ENDPOINT}
