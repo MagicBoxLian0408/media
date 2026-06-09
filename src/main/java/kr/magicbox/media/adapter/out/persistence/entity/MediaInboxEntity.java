@@ -18,7 +18,7 @@ import java.time.Instant;
 @Table(name = "media_inbox")
 public class MediaInboxEntity extends BaseEntity {
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "inbox_key", nullable = false, unique = true)
     private String key;
 
     @Column(nullable = false)
