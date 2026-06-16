@@ -28,7 +28,7 @@ spring:
           user-profile-updated:kr.magicbox.media.adapter.in.kafka.event.UserProfileUpdatedEvent
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       topic:
         attempts: 5
         backoff:
