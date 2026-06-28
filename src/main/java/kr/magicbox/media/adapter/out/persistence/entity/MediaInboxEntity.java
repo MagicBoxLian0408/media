@@ -18,7 +18,7 @@ import java.time.Instant;
 @Table(name = "media_inbox")
 public class MediaInboxEntity extends BaseEntity {
 
-    @Column(name = "event_key", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String key;
 
     @Column(nullable = false)
@@ -50,5 +50,9 @@ public class MediaInboxEntity extends BaseEntity {
 
     public void markProcessed() {
         this.status = MediaInboxStatus.PROCESSED;
+    }
+
+    public void markDeadLettered() {
+        this.status = MediaInboxStatus.DEAD_LETTERED;
     }
 }
