@@ -55,12 +55,12 @@ public class IdempotentAspect {
                 log.warn("[Inbox] 중복 메시지 폐기. key={}", key);
                 return null;
             }
-            MediaInboxEntity inbox = mediaInboxRepository.save(MediaInboxEntity.builder()
+            mediaInboxRepository.save(MediaInboxEntity.builder()
                     .key(key)
                     .topic(consumerRecord.topic())
                     .partition(consumerRecord.partition())
                     .offset(consumerRecord.offset())
-                    .status(MediaInboxStatus.PENDING)
+                    .status(MediaInboxStatus.PROCESSED)
                     .occurredAt(occurredAt)
                     .build());
             try {
@@ -69,7 +69,6 @@ public class IdempotentAspect {
                 status.setRollbackOnly();
                 throw new RuntimeException(e);
             }
-            inbox.markProcessed();
             return null;
         });
     }

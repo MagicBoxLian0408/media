@@ -9,12 +9,15 @@ import kr.magicbox.media.adapter.in.kafka.event.ReleaseCreatedEvent;
 import kr.magicbox.media.adapter.in.kafka.event.ReleaseDeletedEvent;
 import kr.magicbox.media.adapter.in.kafka.event.ReleaseUpdatedEvent;
 import kr.magicbox.media.adapter.in.kafka.event.UserProfileUpdatedEvent;
+import kr.magicbox.media.adapter.out.persistence.repository.MediaInboxRepository;
 import kr.magicbox.media.application.port.in.ActivateMediaUseCase;
 import kr.magicbox.media.application.port.in.DeleteMediaByUuidsUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,8 +30,10 @@ public class MediaEventKafkaListener {
 
     private final ActivateMediaUseCase activateMediaUseCase;
     private final DeleteMediaByUuidsUseCase deleteMediaByUuidsUseCase;
+    private final MediaInboxRepository mediaInboxRepository;
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.release-created", groupId = "media-service")
     public void onReleaseCreated(ConsumerRecord<String, ReleaseCreatedEvent> record) {
         ReleaseCreatedEvent event = record.value();
@@ -38,6 +43,7 @@ public class MediaEventKafkaListener {
     }
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.release-updated", groupId = "media-service")
     public void onReleaseUpdated(ConsumerRecord<String, ReleaseUpdatedEvent> record) {
         ReleaseUpdatedEvent event = record.value();
@@ -54,6 +60,7 @@ public class MediaEventKafkaListener {
     }
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.release-deleted", groupId = "media-service")
     public void onReleaseDeleted(ConsumerRecord<String, ReleaseDeletedEvent> record) {
         ReleaseDeletedEvent event = record.value();
@@ -63,6 +70,7 @@ public class MediaEventKafkaListener {
     }
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.general-goods-created", groupId = "media-service")
     public void onGeneralGoodsCreated(ConsumerRecord<String, GeneralGoodsCreatedEvent> record) {
         GeneralGoodsCreatedEvent event = record.value();
@@ -72,6 +80,7 @@ public class MediaEventKafkaListener {
     }
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.general-goods-updated", groupId = "media-service")
     public void onGeneralGoodsUpdated(ConsumerRecord<String, GeneralGoodsUpdatedEvent> record) {
         GeneralGoodsUpdatedEvent event = record.value();
@@ -88,6 +97,7 @@ public class MediaEventKafkaListener {
     }
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.general-goods-deleted", groupId = "media-service")
     public void onGeneralGoodsDeleted(ConsumerRecord<String, GeneralGoodsDeletedEvent> record) {
         GeneralGoodsDeletedEvent event = record.value();
@@ -97,6 +107,7 @@ public class MediaEventKafkaListener {
     }
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.creator-profile-updated", groupId = "media-service")
     public void onCreatorProfileUpdated(ConsumerRecord<String, CreatorProfileUpdatedEvent> record) {
         CreatorProfileUpdatedEvent event = record.value();
@@ -114,6 +125,7 @@ public class MediaEventKafkaListener {
     }
 
     @Idempotent
+    @RetryableTopic
     @KafkaListener(topics = "outbox.event.user-profile-updated", groupId = "media-service")
     public void onUserProfileUpdated(ConsumerRecord<String, UserProfileUpdatedEvent> record) {
         UserProfileUpdatedEvent event = record.value();
@@ -128,6 +140,13 @@ public class MediaEventKafkaListener {
         if (beforeUrl != null && !beforeUrl.equals(afterUrl)) {
             deleteMediaByUuidsUseCase.deleteByUuids(List.of(beforeUrl));
         }
+    }
+
+    @DltHandler
+    public void handleDlt(ConsumerRecord<String, ?> consumerRecord) {
+        log.error("[Inbox] DLT 전환. topic={}, partition={}, offset={}", consumerRecord.topic(), consumerRecord.partition(), consumerRecord.offset());
+        mediaInboxRepository.findByTopicAndPartitionAndOffset(consumerRecord.topic(), consumerRecord.partition(), consumerRecord.offset())
+                .ifPresent(inbox -> inbox.markDeadLettered());
     }
 
     private List<String> nullSafe(List<String> list) {
